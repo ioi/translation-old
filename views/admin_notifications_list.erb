@@ -1,0 +1,89 @@
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<% content_for :javascripts do %>
+<% end %>
+
+<div class="body container">
+  <h1>Send Notification</h1>
+  <hr>
+  <form class="form-horizontal" role="form" method="POST" action="/admin/notifications">
+    <fieldset disabled>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">From</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="from" value="<%= @user[:username] %>">
+        </div>
+      </div>
+    </fieldset>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">To</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="to" placeholder="To">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Text</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="text" placeholder="Text">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Send</button>
+      </div>
+    </div>
+  </form>
+
+  <h1>Notifications</h1>
+  <hr>
+  <ul id="notification-list">
+    <% @notifications.each do |item| %>
+    <li>[<b><span data-unixtime="<%= item[:created_at] %>"><%= item[:created_at] %></span></b>] "<b><%= item[:from] %></b>" -> "<b><%= item[:to] %></b>" : "<%= item[:text] %>"</li>
+    <% end %>
+  </ul>
+</div>
+
+<% content_for :javascripts do %>
+<script>
+  last_timestamp = undefined;
+  seen_timestamp = {};
+  var get_notifications = function() {
+    var time = last_timestamp || (new Date()).getTime() / 1000.0;
+    $.ajax({
+      url: "/notifications/updates.json?time=" + time,
+      type: "get",
+      async: true,
+      cache: false,
+      timeout: 60000,
+      success: function (data) {
+        var notifications = JSON.parse(data);
+        for (var i = 0; i < notifications.length; i++) {
+          var item = notifications[i];
+          if (seen_timestamp[item.created_at]) {
+            continue;
+          }
+          seen_timestamp[item.created_at] = true;
+          fmt_time = moment.unix(item.created_at).format("HH:mm:ss Z");
+          $("#notification-list").prepend('<li>[<b>' + fmt_time + '</b>] "<b>' + item.from + '</b>" -> "<b>' + item.to + '</b>" : "' + item.text + '"</li>');
+        }
+        last_timestamp = (new Date()).getTime() / 1000.0;
+        try {
+          last_timestamp = notifications[notifications.length - 1].created_at;
+        }
+        catch (e) { };
+
+        // continue polling
+        setTimeout(get_notifications, 3000);
+      },
+      error: function(data) {
+        // continue
+        setTimeout(get_notifications, 3000);
+      }
+    });
+  }
+  get_notifications();
+</script>
+<% end %>
+
+<%= render :partial => :footer %>

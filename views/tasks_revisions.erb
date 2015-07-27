@@ -1,0 +1,107 @@
+<% content_for :stylesheets do %>
+<link href="/assets/stylesheets/bootstrap-slider.css" rel="stylesheet">
+<% end %>
+
+
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<div class="body container">
+  <h1>My Revisions - "<%= @task[:title] %>"</h1>
+  <hr>
+  <ul>
+    <li><input id="slider" style="width: 600px" type="text" value="" data-slider-min="<%= @revisions.first[:num]+1 %>" data-slider-max="<%= @revisions.last[:num] %>" data-slider-step="1" data-slider-value="<%= @revisions.last[:num] %>" data-slider-selection="after" /></li>
+    <li>Checkout: <a href="#" onclick="return checkout(left_rev);">left-side</a> or <a href="#" onclick="return checkout(right_rev);">right-side</a></li>
+  </ul>
+  <hr>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-6" id="left-container">
+      <h3 id="left-title"></h3>
+      <pre><code id="left-text"></code></pre>
+    </div>
+
+    <div class="col-xs-6" id="right-container">
+      <h3 id="right-title"></h3>
+      <pre><code id="right-text"></code></pre>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+<script src="/assets/javascripts/bootstrap-slider.js"></script>
+<script type="text/javascript" src="/google-diff/diff_match_patch.js"></script>
+<script>
+  window.revisions = <%= @revisions.to_json %>;
+  window.right_rev = <%= @revisions.last[:num] %>;
+  window.left_rev = right_rev - 1;
+
+  var update_view = function() {
+    var left_timestamp = moment.unix(revisions[left_rev].created_at).format("HH:mm:ss Z");
+    $("#left-title").text('Revision #' + left_rev + ' (' + left_timestamp + ')');
+
+    var right_timestamp = moment.unix(revisions[right_rev].created_at).format("HH:mm:ss Z");
+    $("#right-title").text('Revision #' + right_rev + ' (' + right_timestamp + ')');
+
+    var diff = new diff_match_patch();
+    var diff_tuples = diff.diff_main(revisions[left_rev].text, revisions[right_rev].text);
+    diff.diff_cleanupEfficiency(diff_tuples);
+
+    var diffed_left = "";
+    var diffed_right = "";
+    for (var idx = 0; idx < diff_tuples.length; idx++) {
+      var tuple = diff_tuples[idx];
+      if (tuple[0] == 0) {
+        // no change
+        diffed_left += tuple[1];
+        diffed_right += tuple[1];
+      }
+      else if (tuple[0] == 1) {
+        // added
+        lines = tuple[1].split("\n");
+        for (var l = 0; l < lines.length; l++) {
+          var line = lines[l];
+          lines[l] = '<span style="background: #a0ffa0;">' + line + '</span>';
+        }
+        diffed_right += lines.join("\n");
+      }
+      else if (tuple[0] == -1) {
+        // deleted
+        lines = tuple[1].split("\n");
+        for (var l = 0; l < lines.length; l++) {
+          var line = lines[l];
+          lines[l] = '<span style="background: #ffd3e0;">' + line + '</span>';
+        }
+        diffed_left += lines.join("\n");
+      }
+    }
+    $("#left-text").html(diffed_left);
+    $("#right-text").html(diffed_right);
+  }
+  update_view();
+
+  $("#slider").slider()
+    .on("slide", function(ev){
+      window.right_rev = ev.value;
+      window.left_rev = right_rev - 1;
+      update_view();
+    });
+</script>
+
+<script>
+  var checkout = function(revision_num) {
+    if (confirm("Confirm checkout?")) {
+      var text = revisions[revision_num].text;
+      $.post("/tasks/<%= @task[:id] %>/revisions", {text: text})
+        .done(function(data) {
+          alert("Checkout successfully.")
+          location.href = "/tasks/<%= @task[:id] %>/revisions";
+        });
+    }
+  };
+</script>
+<% end %>
+
+<%= render :partial => :footer %>

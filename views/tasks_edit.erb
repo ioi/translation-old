@@ -1,0 +1,218 @@
+<% content_for :stylesheets do %>
+  <link href="/assets/codemirror-3.22/lib/codemirror.css" rel="stylesheet">
+  <link href="/assets/stylesheets/linguist-preview.css" rel="stylesheet">
+  <link href="/assets/stylesheets/linguist-tasks-edit.css" rel="stylesheet">
+  <% if @user[:direction] == "rtl" %>
+  <style>.editor-container { direction: rtl !important; }</style>
+  <% end %>
+  <% if not @user[:font].empty? %>
+  <style>.preview { font-family: <%= @user[:font] %>; }</style>
+  <% end %>
+<% end %>
+
+<%= render :partial => :header %>
+<%= render :partial => :editor_navbar %>
+
+<% if flash[:error] %>
+<div class="container alert alert-danger alert-dismissible alert-fixed-top" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <strong>Oops!</strong> <%= flash[:error] %>
+</div>
+<% end %>
+
+<% if flash[:warning] %>
+<div class="container alert alert-warning alert-dismissible alert-fixed-top" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <strong>Oops!</strong> <%= flash[:warning] %>
+</div>
+<% end %>
+
+<% if flash[:info] %>
+<div class="container alert alert-info alert-dismissible alert-fixed-top" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <strong>Heads up!</strong> <%= flash[:info] %>
+</div>
+<% end %>
+
+<div class="body">
+  <div class="editor-container">
+    <div class="preview <%= (@user[:direction] == 'rtl') ? 'rtl' : '' %>">
+      <div class="preview-inner css-reset"></div>
+    </div>
+    <div class="editor">
+      <textarea style="display: none"><%= @task[:text] %></textarea>
+    </div>
+    <span style="clear: both;"></span>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+<script type="text/javascript" src="/codemirror-3.22/lib/codemirror.js"></script>
+<script type="text/javascript" src="/codemirror-3.22/mode/markdown/markdown.js"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({messageStyle: "none"});</script>
+<script type="text/javascript" src="/mathjax-2.3/MathJax.js?config=TeX-AMS-MML_SVG"></script>
+<script type="text/javascript" src="/javascripts/marked.js"></script>
+
+<script>
+  // edit lock heartbeat
+  setInterval(function() {
+    $.post("/tasks/<%= @task[:id] %>/edit_heartbeat", {})
+      .done(function(data) {
+        if (data == "frozen") {
+          console.log("task frozen, go back to task list");
+          location.href = "/";
+        }
+      });
+  }, 7500);
+</script>
+
+<script>
+  var textArea = document.querySelector(".editor > textarea");
+  myCodeMirror = CodeMirror.fromTextArea(textArea, {
+    mode:  "markdown",
+    viewportMargin: Infinity,
+    lineNumbers: true,
+    lineWrapping: true,
+  });
+
+  marked.setOptions({
+    gfm: true,
+    tables: true,
+    breaks: true,
+    smartypants: true
+  });
+
+  window.need_save = false;
+  window.current_revision_num = undefined;
+  var save_revision = function(doc, callback) {
+    if (window.need_save) {
+      console.log("saving in progress...");
+      doc.markClean();
+
+      $("#save-btn").addClass("disabled");
+      $("#save-btn a").text("Saving...");
+
+      var text = doc.getValue();
+      $.post("/tasks/<%= @task[:id] %>/revisions", {text: text})
+        .done(function(data) {
+          current_revision_num = data;
+
+          $("#save-btn").addClass("disabled");
+          $("#save-btn a").text("Saved");
+          console.log("saved! revision=" + data)
+          window.need_save = false;
+          if (callback) {
+            callback(data);
+          }
+        });
+    }
+    else {
+      console.log("document no change");
+    }
+  };
+
+  // save btn
+  $("#save-btn a").click(function() {
+    save_revision(myCodeMirror);
+  });
+
+  // auto saving
+  setInterval(function() {
+    save_revision(myCodeMirror);
+  }, 30000);
+
+  // ISC-only
+  $("#publish-btn").click(function() {
+    if (window.need_save) {
+      save_revision(myCodeMirror, function(revision_num) {
+        $.post("/tasks/<%= @task[:id] %>/releases", {
+          revision_num: revision_num,
+          note: prompt("Release note")
+        }).done(function(data) {
+          var ver = parseInt(data) + 1;
+          alert("Published (ver. " + ver + ")");
+        })
+      });
+    }
+    else if (current_revision_num !== undefined) {
+      $.post("/tasks/<%= @task[:id] %>/releases", {
+        revision_num: current_revision_num,
+        note: prompt("Release note")
+      }).done(function(data) {
+        var ver = parseInt(data) + 1;
+        alert("Published (ver. " + ver + ")");
+      })
+    }
+  });
+
+  var live_preview = function(doc, firstTime) {
+    firstTime = typeof firstTime !== "undefined" ? firstTime : false
+    if (!!!doc.isClean() || firstTime) {
+      doc.markClean();
+
+      if (!firstTime) {
+        console.log("document changed");
+        $("#save-btn").removeClass("disabled");
+        $("#save-btn a").text("Save");
+        window.need_save = true;
+      }
+
+      /* MathJax hacks for marked.js */
+      var text = doc.getValue();
+      text.replace('\\(', '<span class="math">\\(');
+      text.replace('\\)', '\\)</span>');
+      text.replace('\\[', '<span class="math">\\[');
+      text.replace('\\]', '\\]</span>');
+
+      var html = marked(text);
+      var preview = document.querySelector(".preview-inner");
+      preview.innerHTML = html;
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, preview]);
+    }
+    setTimeout(live_preview, 500, doc);
+  }
+  live_preview(myCodeMirror, true);
+</script>
+
+<script>
+  last_timestamp = undefined;
+  seen_timestamp = {};
+  var get_notifications = function() {
+    var time = last_timestamp || (new Date()).getTime() / 1000.0;
+    $.ajax({
+      url: "/notifications/updates.json?username=<%= @user[:username] %>&time=" + time,
+      type: "get",
+      async: true,
+      cache: false,
+      timeout: 60000,
+      success: function (data) {
+        var notifications = JSON.parse(data);
+        for (var i = 0; i < notifications.length; i++) {
+          var item = notifications[i];
+          if (seen_timestamp[item.created_at]) {
+            continue;
+          }
+          seen_timestamp[item.created_at] = true;
+          fmt_time = moment.unix(item.created_at).format("HH:mm:ss Z");
+          $("body").append('<div class="container alert alert-info alert-dismissible alert-fixed-top" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>News!</strong> ' + item.text + ' (' + fmt_time + '/' + item.from + ')</div>');
+        }
+        last_timestamp = (new Date()).getTime() / 1000.0;
+        try {
+          last_timestamp = notifications[notifications.length - 1].time;
+        }
+        catch (e) { };
+
+        // continue polling
+        setTimeout(get_notifications, 3000);
+      },
+      error: function(data) {
+        // continue
+        setTimeout(get_notifications, 3000);
+      }
+    });
+  }
+  get_notifications();
+</script>
+<% end %>
+
+<%= render :partial => :footer %>

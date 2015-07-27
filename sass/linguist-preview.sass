@@ -1,0 +1,120 @@
+.page-header
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif
+  padding-bottom: 16px
+  border-bottom: hsl(0, 0, 45%) 1px solid
+  .logo
+    display: inline-block
+    float: left
+    margin-right: 20px
+    img
+      width: auto
+      height: 84px
+  .text
+    display: inline-block
+    float: left
+    h1
+      font-weight: 700
+      font-size: 14px
+    ul
+      font-weight: 400
+      font-size: 14px
+      margin-top: 8px
+      li + li
+        margin-top: 8px
+  .meta
+    display: inline-block
+    float: right
+    text-align: right
+    margin-top: 48px
+    h1
+      font-family: "Courier New", monospace
+      font-weight: bold
+      font-size: 18px
+      letter-spacing: -1px
+      line-height: 24px
+    h2
+      font-weight: 300
+      font-size: 12px
+
+.preview
+  // this would cause text overlap when Russian with MathJax
+  // text-rendering: optimizelegibility
+  // -webkit-font-smoothing: antialiased
+  overflow-x: hidden
+  overflow-y: hidden
+  font-family: "Times New Roman", Times, serif
+  font-size: 15px
+  line-height: 1.15
+  // RTL should not be left
+  // text-align: left
+  h1
+    font-size: 32px
+    font-weight: bold
+    line-height: 2
+  h2
+    font-size: 24px
+    font-weight: bold
+    line-height: 2
+  h3
+    font-size: 18px
+    font-weight: bold
+    line-height: 2
+  i,
+  em
+    font-style: italic
+  p + p
+    margin-top: 1em
+  img
+    display: block
+    margin: 0 auto
+    height: auto
+    max-width: 100%
+  table
+    direction: ltr
+    border: 1px solid black
+    margin: 20px auto
+    th,
+    td
+      border: 1px solid black
+      padding: 2px 5px
+      vertical-align: middle
+    th
+      text-align: center !important
+      font-weight: bold
+  pre
+    direction: ltr
+    background: hsl(0, 0%, 93.5%)
+    padding: 10px 20px
+    font-family: "Courier New", monospace
+    letter-spacing: -1px
+    margin-bottom: 10px
+    word-wrap: break-all
+  code
+    direction: ltr
+    font-family: "Courier New", monospace
+    letter-spacing: -1px
+    word-wrap: break-all
+  strong
+    font-weight: bold
+  ul
+    list-style: square
+    margin: 10px 0 10px 36px
+    li + li
+      margin-top: 10px
+
+// RTL fixes
+.preview.rtl
+  ul
+    margin: 10px 36px 10px 0
+
+// Custom text-direction tags
+ltr
+  display: block
+  direction: ltr !important
+
+rtl
+  display: block
+  direction: rtl !important
+
+td .MathJax_SVG
+  font-size: 87% !important

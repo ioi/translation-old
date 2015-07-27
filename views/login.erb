@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Shao-Chung Chen">
+  <meta name="description" content="Translation service for IOI 2014 in Taiwan.">
+  <link rel="stylesheet" type="text/css" href="/assets/stylesheets/reset.css">
+  <link rel="stylesheet" type="text/css" href="/assets/stylesheets/linguist-login.css">
+</head>
+<body>
+  <div class="login-box">
+    <img src="/assets/images/ioi2014-logo.png" />
+    <h1>Translation</h1>
+    <form class="login" method="post" action="login">
+      <input type="text" name="username" placeholder="Login ID" />
+      <input type="password" name="password" placeholder="Password" />
+      <input type="submit" style="visibility: hidden; position: absolute;" />
+    </form>
+  </div>
+  <div class="hellos">
+    <img src="/assets/images/hellos.png" />
+  </div>
+
+  <div class="ioi2014">
+    <a href="http://www.ioi2014.org/" target="_blank">IOI 2014</a>
+  </div>
+
+  <div class="get-firefox">
+    <a href="http://www.mozilla.org/en-US/firefox/"><img src="/assets/images/get-firefox.gif" /></a>
+  </div>
+
+  <script>document.querySelector("input[name=username]").focus();</script>
+  <% if flash[:error] %>
+    <script>alert("<%= flash[:error] %>");</script>
+  <% end %>
+</body>
+</html>

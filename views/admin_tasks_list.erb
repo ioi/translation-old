@@ -1,0 +1,45 @@
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<div class="body container">
+  <% if flash[:info] %>
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Gotcha!</strong> <%= flash[:info] %>
+  </div>
+  <% end %>
+
+  <h1>Tasks List</h1>
+
+  <% @users.each do |user| %>
+  <hr>
+  <h3>User "<%= user[:username] %>" (<%= user[:lang] %> / <%= user[:country] %>)</h3>
+  <table class="table table-hover sortable">
+    <thead>
+      <tr>
+        <th data-default-sort="asc">Task #</th>
+        <th>Title</th>
+        <th>Download Markdown</th>
+        <th>Downlaod PDF</th>
+        <th>Toggle Freeze</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task[:id] %></td>
+        <td><%= task[:title] %></td>
+        <td><a href="/tasks/<%= task[:id] %>.md?username=<%= user[:username] %>">Markdown</a></td>
+        <td><a href="/tasks/<%= task[:id] %>.pdf?username=<%= user[:username] %>">PDF</a></td>
+        <% if user[:tasks_frozen][task[:id]] %>
+          <td><a href="/admin/tasks/<%= user[:username] %>/<%= task[:id] %>/unfreeze">Unfreeze</a></td>
+        <% else %>
+          <td><a href="/admin/tasks/<%= user[:username] %>/<%= task[:id] %>/freeze">Freeze</a></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+</div>
+<%= render :partial => :footer %>

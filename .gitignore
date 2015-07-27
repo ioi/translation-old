@@ -1,0 +1,9 @@
+.*.swp
+.DS_Store
+tmp
+.sass-cache
+public/codemirror*
+public/mathjax*
+public/stylesheets
+*.rdb
+unicorn

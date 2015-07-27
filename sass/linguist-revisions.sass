@@ -1,0 +1,123 @@
+*
+  // box-shadow: 0 0 1px 0 hsl(0, 0%, 20%)
+
+body
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif
+
+a
+  cursor: pointer
+
+.header
+  height: 44px
+  line-height: 44px
+  vertical-align: middle
+  background: linear-gradient(to bottom, #f7f7f7 0%, #ececec 80%)
+  border-bottom: 1px solid hsl(0, 0%, 85%)
+  position: fixed
+  top: 0
+  width: 100%
+  min-width: 960px
+  z-index: 10
+  .toolbar
+    margin-left: 20px
+    display: inline-block
+    .btn
+      background: #acacac
+      padding: 2px 7px
+      border-radius: 3px
+      color: white
+      text-decoration: none
+      font-weight: 600
+      &:hover
+        background: darken(#acacac, 10%)
+    .btn + .btn
+      margin-left: 8px
+  .float-right
+    float: right
+  .brand
+    display: inline-block
+    margin-left: 20px
+    font-size: 17px
+    font-weight: 600
+    color: black
+    text-shadow: white 0 1px 0
+    letter-spacing: -0.25px
+  .user
+    display: inline-block
+    font-size: 15px
+    margin-right: 20px
+    .username
+      font-weight: 600
+    img
+      width: auto
+      height: 15px
+      vertical-align: -2px
+
+.footer
+  min-height: 24px
+  background: linear-gradient(to bottom, #f0f0f0 0%, #dedede 80%)
+  border-top: 1px solid hsl(0, 0%, 85%)
+  position: fixed
+  bottom: 0
+  width: 100%
+  z-index: 10
+  line-height: 24px
+  font-family: "Source Sans Pro"
+  .status-bar
+    margin-left: 20px
+    font-size: 12px
+    font-weight: 600
+    color: hsl(0, 0%, 10%)
+  .action
+    margin-left: 5px
+    color: hsl(0, 80%, 40%)
+    font-weight: 400
+
+.container
+  // direction: ltr
+  overflow: hidden
+  padding-bottom: 24px
+  min-width: 1255px
+  width: 1255px
+  margin: 0 auto
+
+.revision-info
+  height: 24px
+  line-height: 24px
+  vertical-align: middle
+  border-bottom: 1px solid hsl(0, 0%, 85%)
+  position: fixed
+  top: 44px
+  left: -moz-calc((100% - 1255px) / 2)
+  left: -webkit-calc((100% - 1255px) / 2)
+  width: 1255px
+  z-index: 10
+
+.revision-num
+  text-align: center
+  padding-bottom: 10px
+  margin: 10px 200px
+  font-family: "Source Sans Pro"
+  font-size: 16px
+  color: hsl(210, 80%, 50%)
+  border-bottom: 1px solid hsl(0, 0%, 85%)
+
+.preview-inner
+  // margin: 20px
+  // padding: 20px
+  // box-shadow: 1px 1px 2px 1px hsl(0, 0%, 70%)
+  // background: white
+  padding: 0 20px
+
+.preview
+  display: inline-block
+  // background: url("/images/ricepaper2.png")
+  margin-top: 45px
+  // width: 665px
+  width: 625px
+  vertical-align: top
+  position: relative
+  z-index: 2
+  box-shadow: -1px 0 0 0 hsl(0, 0%, 85%)
+  margin-bottom: -9999px
+  padding-bottom: 9999px

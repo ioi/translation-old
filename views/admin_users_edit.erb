@@ -1,0 +1,129 @@
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<div class="body container">
+  <% if flash[:info] %>
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Gotcha!</strong> <%= flash[:info] %>
+  </div>
+  <% end %>
+
+  <h1>User - <%= @the_user[:username] %></h1>
+  <hr>
+
+  <form class="form-horizontal" role="form" method="POST" action="/admin/users/<%= @the_user[:username] %>">
+    <fieldset disabled>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Username</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="username" value="<%= @the_user[:username] %>">
+        </div>
+      </div>
+    </fieldset>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="password" value="<%= @the_user[:password] %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Role</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="role" value="admin" <%= @the_user[:role] == "admin" ? "checked" : "" %>>
+            Admin
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="role" value="staff" <%= @the_user[:role] == "staff" ? "checked" : "" %>>
+            Staff
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="role" value="user" <%= @the_user[:role] == "user" ? "checked" : "" %>>
+            User
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Language</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="lang" value="<%= @the_user[:lang] %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Country</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="country" value="<%= @the_user[:country] %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Direction</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="direction" value="ltr" <%= @the_user[:direction] == "ltr" ? "checked" : "" %>>
+            Left-to-Right (LTR)
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="direction" value="rtl" <%= @the_user[:direction] == "rtl" ? "checked" : "" %>>
+            Right-to-Left (RTL)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Font</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="font" value="<%= @the_user[:font] %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Plaintext Editor</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="plaintext_editor" value="yes" <%= @the_user[:plaintext_editor] == "yes" ? "checked" : "" %>>
+            Yes
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="plaintext_editor" value="no" <%= @the_user[:plaintext_editor] == "no" ? "checked" : "" %>>
+            No (use CodeMirror)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Update</button>
+        <button id="delete-btn" type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+    <input type="hidden" name="_method" value="PUT" />
+  </form>
+</div>
+
+<form id="delete-form" method="POST" action="/admin/users/<%= @the_user[:username] %>">
+  <input type="hidden" name="_method" value="DELETE" />
+</form>
+
+<% content_for :javascripts do %>
+<script>
+  $("#delete-btn").click(function() {
+    if (confirm('Confirm deleting user "<%= @the_user[:username]%>"?')) {
+      $("#delete-form").submit();
+    }
+  });
+</script>
+<% end %>
+
+<%= render :partial => :footer %>

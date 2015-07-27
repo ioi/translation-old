@@ -1,0 +1,14 @@
+  <script src="/assets/javascripts/jquery-1.11.1.min.js"></script>
+  <script src="/assets/javascripts/moment.min.js"></script>
+  <script src="/assets/javascripts/bootstrap.min.js"></script>
+  <script src="/assets/javascripts/bootstrap-sortable.js"></script>
+  <script>
+    $("*[data-unixtime]").each(function(el) {
+      var $this = $(this);
+      var timestamp = moment.unix($this.attr("data-unixtime")).format("HH:mm:ss Z");
+      $this.text(timestamp);
+    });
+  </script>
+  <%= yield_content :javascripts %>
+</body>
+</html>

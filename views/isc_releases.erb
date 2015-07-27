@@ -1,0 +1,76 @@
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<div class="body container">
+  <h1>ISC versions - "<%= @task[:title] %>"</h1>
+  <hr>
+  <a href="/ISC/tasks/<%= @task[:id] %>/diff">See diffs</a>
+  <hr>
+  <table class="table table-hover sortable">
+    <thead>
+      <tr>
+        <th data-default-sort="asc">Ver</th>
+        <th>Time</th>
+        <th>Release Note</th>
+        <th>Download Markdown</th>
+        <th>Download PDF</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% release_num = 1 %>
+      <% @releases.each do |release| %>
+      <tr>
+        <td><%= release_num %></td>
+        <td><span data-unixtime="<%= release[:created_at] %>"><%= release[:created_at] %></span></td>
+        <td><%= release[:note] %></td>
+        <td><a href="/ISC/tasks/<%= @task[:id] %>.md?revision=<%= release[:revision_num] %>">Markdown</a></td>
+        <td><a href="/ISC/tasks/<%= @task[:id] %>.pdf?revision=<%= release[:revision_num] %>">PDF</a></td>
+      </tr>
+      <% release_num += 1 %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% content_for :javascripts do %>
+<script>
+  last_timestamp = undefined;
+  seen_timestamp = {};
+  var get_notifications = function() {
+    var time = last_timestamp || (new Date()).getTime() / 1000.0;
+    $.ajax({
+      url: "/notifications/updates.json?username=<%= @user[:username] %>&time=" + time,
+      type: "get",
+      async: true,
+      cache: false,
+      timeout: 60000,
+      success: function (data) {
+        var notifications = JSON.parse(data);
+        for (var i = 0; i < notifications.length; i++) {
+          var item = notifications[i];
+          if (seen_timestamp[item.created_at]) {
+            continue;
+          }
+          seen_timestamp[item.created_at] = true;
+          $(".body").prepend('<div class="alert alert-info alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>News!</strong> ' + item.text + ' (' + item.created_at + '/' + item.from + ')</div>');
+        }
+        last_timestamp = (new Date()).getTime() / 1000.0;
+        try {
+          last_timestamp = notifications[notifications.length - 1].created_at;
+        }
+        catch (e) { };
+
+        // continue polling
+        setTimeout(get_notifications, 3000);
+      },
+      error: function(data) {
+        // continue
+        setTimeout(get_notifications, 3000);
+      }
+    });
+  }
+  get_notifications();
+</script>
+<% end %>
+
+<%= render :partial => :footer %>

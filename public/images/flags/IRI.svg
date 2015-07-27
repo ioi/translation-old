@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1575" height="900" viewBox="-157.5 0 315 180">
+<title>Flag of Iran</title>
+<rect x="-157.5" width="315" height="180" fill="#239f40"/>
+<rect x="-157.5" width="315" height="60" y="60" fill="#fff"/>
+<rect x="-157.5" width="315" height="60" y="120" fill="#da0000"/>
+<g id="b4">
+<g id="b2">
+<g id="b" transform="translate(0, 55.1)" fill="none" stroke-linecap="square" stroke="#fff">
+<path id="p" d="M -9,-3 h 12 m -12,4 v -2 h 4 v 2 h 4 v -2 h -2 m 6,2 h -2 v -2 h 4 v -2 m 0,2 v 2 h 4 v -4 m -2,0 v 4 m -14,0 h 0.001" transform="scale(1.4)"/>
+<path id="t" d="M -9,2.25 h 8 m 2,0 h 8" transform="scale(1.4, 2)"/>
+<use xlink:href="#p" transform="translate(0, 72.6)"/>
+<use xlink:href="#t" transform="translate(0, 60.8)"/>
+</g>
+<use xlink:href="#b" transform="translate(28)"/>
+</g>
+<use xlink:href="#b2" transform="translate(-56)"/>
+</g>
+<use xlink:href="#b4" transform="translate(112)"/>
+<use xlink:href="#b" transform="translate(-84)"/>
+<use xlink:href="#b2" transform="translate(-140)"/>
+<svg x="-21.796" y="68.204" width="43.593" height="43.593" viewBox="-225 -225 450 450"><!-- 43.59255168 -->
+<g id="h" transform="scale(225)" fill="#da0000">
+<path d="M 0,-0.78727828 A 0.30999453,0.30999453 0 0 0 0.11803399,-0.6881910 L 0.11803399,-0.10040571 L 0.07780925,0.89290476 L 0,1 L -0.00778,0.98929 z M -0.54814963,0.83638029 A 1,1 0 0 0 0.32854359,-0.72238442 A 0.91204607,0.91204607 0 0 1 -0.54814963,0.83638029 M 0.61833884,0.66140933 A 1,1 0 0 0 0.42164400,-0.74104970 A 0.76393202,0.76393202 0 0 1 0.61833884,0.66140933 M -0.00694237,-0.84208815 A 0.14431027,0.14431027 0 0 0 0.25207507,-0.96770768 A 0.13640820,0.13640820 0 0 1 0,-0.92463431 z"/>
+</g>
+<use xlink:href="#h" transform="scale(-1, 1)"/>
+</svg>
+</svg>

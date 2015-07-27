@@ -1,0 +1,117 @@
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<% content_for :javascripts do %>
+<% end %>
+
+<div class="body container">
+  <% if flash[:error] %>
+  <div class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Oops!</strong> <%= flash[:error] %>
+  </div>
+  <% end %>
+
+  <% if flash[:warning] %>
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Oops!</strong> <%= flash[:warning] %>
+  </div>
+  <% end %>
+
+  <h1>Hello,</h1>
+  <ul>
+    <li>We recommend to use <a href="http://www.mozilla.org/en-US/firefox/">Mozilla Firefox</a>.</li>
+    <li>Some users might encounter technical issues on editing RTL text — alternatively you might use your own editor and paste the text here.</li>
+  </ul>
+  <hr>
+
+  <h1>Day-1 “Notices”</h1>
+  <ul>
+    <li>Download all translated versions PDF: <a href="/assets/day1-notice.zip">day1-notice.zip</a></li>
+    <li>Please be noted that the <b>tasks names</b> and <b>limits</b> are different</li>
+  </ul>
+  <hr>
+
+  <h1>My Tasks</h1>
+  <table class="table table-hover sortable">
+    <thead>
+      <tr>
+        <th data-default-sort="asc">Id</th>
+        <th>Title</th>
+        <th>Revisions #</th>
+        <th>ISC Versions</th>
+        <th>Download Markdown</th>
+        <th>Download PDF</th>
+        <th>Edit</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task[:id] %></td>
+        <td><%= task[:title] %></td>
+        <td><%= task[:last_revision_num]+1 %></td>
+        <td><a href="/ISC/tasks/<%= task[:id] %>/releases">ISC Versions</a></td>
+        <td><a href="/tasks/<%= task[:id] %>.md">Markdown</a></td>
+        <td><a href="/tasks/<%= task[:id] %>.pdf">PDF</a></td>
+        <% if task[:is_frozen] %>
+          <td></td>
+          <td>Frozen</td>
+        <% elsif task[:is_editing] %>
+          <td></td>
+          <td>Editing</td>
+        <% else %>
+          <td><a href="/tasks/<%= task[:id] %>/edit">Edit</a></td>
+          <td></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% content_for :javascripts do %>
+<script>
+  last_timestamp = undefined;
+  seen_timestamp = {};
+  var get_notifications = function() {
+    var time = last_timestamp || (new Date()).getTime() / 1000.0;
+    $.ajax({
+      url: "/notifications/updates.json?username=<%= @user[:username] %>&time=" + time,
+      type: "get",
+      async: true,
+      cache: false,
+      timeout: 60000,
+      success: function (data) {
+        var notifications = JSON.parse(data);
+        for (var i = 0; i < notifications.length; i++) {
+          var item = notifications[i];
+          if (seen_timestamp[item.created_at]) {
+            continue;
+          }
+          seen_timestamp[item.created_at] = true;
+          fmt_time = moment.unix(item.created_at).format("HH:mm:ss Z");
+          $(".body").prepend('<div class="alert alert-info alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>News!</strong> ' + item.text + ' (' + fmt_time + '/' + item.from + ')</div>');
+        }
+        last_timestamp = (new Date()).getTime() / 1000.0;
+        try {
+          last_timestamp = notifications[notifications.length - 1].created_at;
+        }
+        catch (e) { };
+
+        // continue polling
+        setTimeout(get_notifications, 3000);
+      },
+      error: function(data) {
+        // continue
+        setTimeout(get_notifications, 3000);
+      }
+    });
+  }
+  get_notifications();
+</script>
+<% end %>
+
+<%= render :partial => :footer %>

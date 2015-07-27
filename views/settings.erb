@@ -1,0 +1,83 @@
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<div class="body container">
+  <% if flash[:info] %>
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Gotcha!</strong> <%= flash[:info] %>
+  </div>
+  <% end %>
+
+  <h1>Settings - <%= @user[:username] %></h1>
+  <hr>
+
+  <form class="form-horizontal" role="form" method="POST" action="/settings">
+    <fieldset disabled>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Username</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="username" value="<%= @user[:username] %>">
+        </div>
+      </div>
+    </fieldset>
+    <fieldset disabled>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="password" value="<%= @user[:password] %>">
+        </div>
+      </div>
+    </fieldset>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Direction</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="direction" value="ltr" <%= @user[:direction] == "ltr" ? "checked" : "" %>>
+            Left-to-Right (LTR)
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="direction" value="rtl" <%= @user[:direction] == "rtl" ? "checked" : "" %>>
+            Right-to-Left (RTL)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Font</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="font" value="<%= @user[:font] %>">
+      </div>
+    </div>
+    <!--
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Plaintext Editor</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="plaintext_editor" value="yes" <%= @user[:plaintext_editor] == "yes" ? "checked" : "" %>>
+            Yes
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="plaintext_editor" value="no" <%= @user[:plaintext_editor] == "no" ? "checked" : "" %>>
+            No (use CodeMirror)
+          </label>
+        </div>
+      </div>
+    </div>
+    -->
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Update</button>
+      </div>
+    </div>
+    <input type="hidden" name="_method" value="PUT" />
+  </form>
+</div>
+
+<%= render :partial => :footer %>

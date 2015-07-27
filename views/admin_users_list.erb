@@ -1,0 +1,142 @@
+<%= render :partial => :header %>
+<%= render :partial => :navbar %>
+
+<div class="body container">
+  <% if flash[:info] %>
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Gotcha!</strong> <%= flash[:info] %>
+  </div>
+  <% end %>
+
+  <h1>New User</h1>
+  <hr>
+  <form class="form-horizontal" role="form" method="POST" action="/admin/users">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Username</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="username" placeholder="Username">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="password" placeholder="Password">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Role</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="role" value="admin">
+            Admin
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="role" value="staff">
+            Staff
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="role" value="user" checked>
+            User
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Language</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="lang" placeholder="Language">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Country</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="country" placeholder="Country">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Direction</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="direction" value="ltr" checked>
+            Left-to-Right (LTR)
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="direction" value="rtl">
+            Right-to-Left (RTL)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Font</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="font" placeholder="Preferred Font">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Plaintext Editor</label>
+      <div class="col-sm-10">
+        <div class="radio">
+          <label>
+            <input type="radio" name="plaintext_editor" value="yes">
+            Yes
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="plaintext_editor" value="no" checked>
+            No (use CodeMirror)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Create</button>
+      </div>
+    </div>
+  </form>
+
+  <h1>Users</h1>
+  <hr>
+  <table class="table table-hover sortable">
+    <thead>
+      <tr>
+        <th data-default-sort="asc">Username</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th>Language</th>
+        <th>Country</th>
+        <th>Direction</th>
+        <th>Font</th>
+        <th>Plaintext Editor</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+      <tr>
+        <td><%= user[:username] %></td>
+        <td><%= user[:password] %></td>
+        <td><%= user[:role] %></td>
+        <td><%= user[:lang] %></td>
+        <td><%= user[:country] %></td>
+        <td><%= user[:direction] %></td>
+        <td><%= user[:font] %></td>
+        <td><%= user[:plaintext_editor] %></td>
+        <td><a href="/admin/users/<%= user[:username] %>">Edit</a></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%= render :partial => :footer %>
