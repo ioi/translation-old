@@ -3,6 +3,10 @@ Linguist
 Web-based **Task Translation Service** for [IOI competitions](http://www.ioinformatics.org/).
 This project has been proven at [IOI2014 in Taiwan](http://www.ioi2014.org/).
 
+Screenshot
+----------
+![Live-preview Markdown editor with ISC notification broadcast](https://raw.githubusercontent.com/ioi/translation/master/doc/screenshots/Notification.png)
+
 Disclaimer
 ----------
 * A few open-source projects/resources are included within this repository; all of the copyrights of such projects/resources belong to their respective owners.
