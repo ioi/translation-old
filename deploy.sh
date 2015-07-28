@@ -6,6 +6,9 @@ sudo apt-get install --force-yes -y --quiet redis-server
 # utils
 sudo apt-get install --force-yes -y --quiet wget tar curl
 
+# fonts (Ubuntu 14.04+)
+sudo apt-get install --force-yes -y --quite fonts-noto
+
 # mathjax 2.3
 wget -O mathjax-2.3.0.zip https://github.com/mathjax/MathJax/archive/2.3.0.zip
 unzip mathjax-2.3.0.zip -d public/ && mv public/MathJax-2.3.0 public/mathjax-2.3
