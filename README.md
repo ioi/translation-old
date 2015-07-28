@@ -4,7 +4,7 @@ Web-based **Task Translation Service** for [IOI competitions](http://www.ioinfor
 This project has been proven at [IOI2014 in Taiwan](http://www.ioi2014.org/).
 
 Features
-========
+--------
 * Markdown syntax with mathematical expression support
 * Enhanced web-based editor with live-preview
 * PDF generation for printing
