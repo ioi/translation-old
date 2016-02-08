@@ -12,10 +12,12 @@ sudo apt-get install --force-yes -y --quite fonts-noto
 # mathjax 2.3
 wget -O mathjax-2.3.0.zip https://github.com/mathjax/MathJax/archive/2.3.0.zip
 unzip mathjax-2.3.0.zip -d public/ && mv public/MathJax-2.3.0 public/mathjax-2.3
+rm mathjax-2.3.0.zip
 
 # codemirror 3.22
 wget http://codemirror.net/codemirror-3.22.zip
-unzip codemirror-3.22.zip -d public/ && mv public/codemirror-3.22 public/codemirror
+unzip codemirror-3.22.zip -d public/
+rm code-mirror-3.22.zip
 
 # phantomjs 1.9.7 x86_64
 wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
