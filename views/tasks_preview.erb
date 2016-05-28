@@ -54,6 +54,9 @@
       breaks: true
     });
     var raw = document.querySelector("textarea[name=raw]").value;
+  	<% if @owner[:direction] == "rtl" %>
+	raw = raw.replace(new RegExp("\\\)", 'g'), "\\\)&lrm;");
+	<% end %>
     var html = marked(raw);
     var preview = document.querySelector(".preview");
     preview.innerHTML = html;
