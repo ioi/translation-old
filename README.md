@@ -42,6 +42,12 @@ Deployment Steps
 1. Change working directory to `DbInit/` and Run `ruby dbinit.rb`
 1. Visit `http://127.0.0.1:8080`
 
+Troubleshooting
+---------------
+1. Font issue on Amazon EC2 instance
+    - Amazon EC2 instance comes without Desktop environement, therefore you'll need to install fonts by `sudo apt-get install fontconfig fontconfig-config fonts-dejavu-core fonts-droid fonts-freefont-ttf fonts-kacst fonts-kacst-one fonts-khmeros-core fonts-lao fonts-liberation fonts-lklug-sinhala fonts-nanum fonts-opensymbol fonts-sil-abyssinica fonts-sil-padauk fonts-takao-pgothic fonts-thai-tlwg fonts-tibetan-machine fonts-tlwg-garuda fonts-tlwg-kinnari fonts-tlwg-loma fonts-tlwg-mono fonts-tlwg-norasi fonts-tlwg-purisa fonts-tlwg-sawasdee fonts-tlwg-typewriter fonts-tlwg-typist fonts-tlwg-typo fonts-tlwg-umpush fonts-tlwg-waree -y`
+    - Thank [@myungwoo](https://github.com/myungwoo). See #2 for details.
+
 Contribution Welcome
 --------------------
 * Submit pull requests
