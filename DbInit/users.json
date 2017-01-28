@@ -56,7 +56,7 @@
         {"username":"IRL",      "password":"7LFVKP",    "role":"user",          "lang":"en-IE",         "country":"IRL",        "font":"",              "direction":"ltr",      "plaintext_editor":"no" },
         {"username":"ISR",      "password":"ADGW8G",    "role":"user",          "lang":"he-IL",         "country":"ISR",        "font":"",              "direction":"rtl",      "plaintext_editor":"no" },
         {"username":"ITA",      "password":"C3M9ZL",    "role":"user",          "lang":"it-IT",         "country":"ITA",        "font":"",              "direction":"ltr",      "plaintext_editor":"no" },
-        {"username":"JPN",      "password":"MXXAV8",    "role":"user",          "lang":"ja-JP",         "country":"JPN",        "font":"IPAMincho",              "direction":"ltr",      "plaintext_editor":"no" },
+        {"username":"JPN",      "password":"MXXAV8",    "role":"user",          "lang":"ja-JP",         "country":"JPN",        "font":"TakaoPGothic",              "direction":"ltr",      "plaintext_editor":"no" },
         {"username":"JOR",      "password":"ZXUULP",    "role":"user",          "lang":"en-JOR",        "country":"JOR",        "font":"",              "direction":"ltr",      "plaintext_editor":"no" },
         {"username":"KAZ",      "password":"PHADLZ",    "role":"user",          "lang":"kk-KZ",         "country":"KAZ",        "font":"",              "direction":"ltr",      "plaintext_editor":"no" },
         {"username":"KOR",      "password":"9RMDH9",    "role":"user",          "lang":"en-KOR",        "country":"KOR",        "font":"",              "direction":"ltr",      "plaintext_editor":"no" },
